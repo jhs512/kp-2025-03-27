@@ -72,9 +72,9 @@ class HomeController(
     }
 
     @GetMapping("/makePresignedUrl")
-    fun makePresignedUrl(): String {
+    fun makePresignedUrl(fileName: String): String {
         val bucketName = "bucket-jhs512-01"
-        val key = "a.png"
+        val key = fileName
 
         val presignedRequest = software.amazon.awssdk.services.s3.presigner.S3Presigner.create()
             .presignPutObject { builder ->
@@ -135,8 +135,6 @@ class HomeController(
                     </form>
                 </div>
                 <script>
-                    const presignedUrl = 'https://bucket-jhs512-01.s3.ap-northeast-2.amazonaws.com/a.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20250327T062344Z&X-Amz-SignedHeaders=host&X-Amz-Credential=AKIA4NAXQ3UKTXHDRJ4M%2F20250327%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Expires=600&X-Amz-Signature=00befe574bdfda516d9950d7944cfa904145268cac75e98ad5c7ec0d3db8fc15';
-                    
                     document.getElementById('uploadForm').addEventListener('submit', async (e) => {
                         e.preventDefault();
                         
@@ -154,6 +152,12 @@ class HomeController(
                         }
                         
                         try {
+                            // Presigned URL 생성
+                            const fileName = encodeURIComponent(file.name)
+                            const presignedUrlResponse = await fetch(`/makePresignedUrl?fileName=` + fileName);
+                            const presignedUrl = await presignedUrlResponse.text();
+                            
+                            // 파일 업로드
                             const response = await fetch(presignedUrl, {
                                 method: 'PUT',
                                 body: file,
