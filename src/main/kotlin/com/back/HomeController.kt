@@ -33,4 +33,19 @@ class HomeController(
 
         return "완료"
     }
+
+    @GetMapping("/delete1")
+    fun delete1(): String {
+        val bucketName = "bucket-jhs512-01"
+        val key = "screenshots/스크린샷 2024-01-29 092348.png"
+
+        val deleteObjectRequest = software.amazon.awssdk.services.s3.model.DeleteObjectRequest.builder()
+            .bucket(bucketName)
+            .key(key)
+            .build()
+
+        s3Client.deleteObject(deleteObjectRequest)
+
+        return "완료"
+    }
 }
