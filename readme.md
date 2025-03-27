@@ -19,3 +19,29 @@
 ## 커밋 4 : upload1 구현
 ## 커밋 5 : delete1 구현
 ## 커밋 6 : modify1 구현
+## 커밋 7 : presigned 발급, 사용
+```angular2html
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "GET",
+            "PUT",
+            "POST",
+            "DELETE",
+            "HEAD"
+        ],
+        "AllowedOrigins": [
+            "http://localhost:8080"
+        ],
+        "ExposeHeaders": [
+            "x-amz-server-side-encryption",
+            "x-amz-request-id",
+            "x-amz-id-2"
+        ],
+        "MaxAgeSeconds": 3000
+    }
+]
+```
